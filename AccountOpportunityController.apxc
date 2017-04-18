@@ -1,31 +1,35 @@
 public class AccountOpportunityController {
-    public Opportunity opp {get; set;}
-    public List<Opportunity> listopps {get; set;}
-    public Id oppsId {get; set;}
-    public Id id {get; set;}
+    public Opportunity opp {get; set;} // Used to add Oppurtunity
+    public List<Opportunity> listopps {get; set;} // To Display List of Opportunity
+    public Id oppsId {get; set;} // Used to get ID to Delete Opportunity
+    public Id id {get; set;} // To Get Id of Account
+    
+    // Constructor
     public AccountOpportunityController(ApexPages.StandardController controller) {
         id = ApexPages.currentPage().getParameters().get('id');
         getListopps();
     }
-    
+    // To get List of Opportunities
     public void getListopps() {
         system.debug('Select name,AccountId  from Opportunity where AccountId =\''+String.escapeSingleQuotes(id) + '\'');
         listopps=database.query('Select name,AccountId,closedate,stagename from Opportunity where AccountId =\''+String.escapeSingleQuotes(id) + '\'');
         System.debug('Data in opps '+listopps);
     }
     
+    // To delete Opportunity
     public void deleteopp() {
         try {
             system.debug('in delete opp ::' + 'SELECT Id FROM Opportunity WHERE Id =\'' + String.escapeSingleQuotes(oppsId) + '\'');
             if(oppsId != null){
-                //List<Opportunity> myOpp = database.query('SELECT Id FROM Opportunity WHERE Id =\'' + String.escapeSingleQuotes(oppsId) + '\'');
-                //system.debug('opp' + myOpp);
+                
                 delete [SELECT Id FROM Opportunity WHERE Id =:oppsId];
+                getListopps();
+               
             }
         }
         catch(exception ex){
             system.debug('deleteopp error: '+ex.getMessage());
-        }
-        //return ApexPages.currentPage();
+            }
+       
     }
 }
