@@ -1,11 +1,11 @@
 <apex:page standardController="Account" extensions="AccountOpportunityController" showHeader="true" sidebar="false" id="AccOpp"> 
     <head>
-        <apex:includeScript value="{!$Resource.ver223JS}" />
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
         <apex:includeScript value="/soap/ajax/15.0/connection.js"/>
         <apex:includeScript value="/soap/ajax/15.0/apex.js"/>
         <script type="text/javascript"> 
         $(function() {
-            //----- OPEN
+            //----- OPEN PopUp
             $('[data-popup-open]').on('click', function(e)  {
                 var targeted_popup_class = jQuery(this).attr('data-popup-open');
                 $('[data-popup="' + targeted_popup_class + '"]').fadeIn(350);
@@ -13,7 +13,7 @@
                 e.preventDefault();
             });
             
-            //----- CLOSE
+            //----- CLOSE PopUp
             $('[data-popup-close]').on('click', function(e)  {
                 var targeted_popup_class = jQuery(this).attr('data-popup-close');
                 $('[data-popup="' + targeted_popup_class + '"]').fadeOut(350);
@@ -26,6 +26,7 @@
         }
         </script>
         <style type="text/css">  
+            /* CSS To Set PopUp */
             /* Outer */
             .popup {
             width:100%;
@@ -106,8 +107,10 @@
     </head>
     <body>
         <apex:form id="form1">
+            <!-- Action Function to Refresh Grid after adding Opportunity -->
             <apex:actionFunction name="rerenderOpp" action="{!getListopps}" rerender="OppTable">
             </apex:actionFunction>
+            <!-- Action Function to Refresh Grid after deleting Opportunity -->
             <apex:actionFunction name="afdeleteOpp" action="{!deleteopp}" rerender="OppTable">
                 <apex:param id="oppdel" name="oppsdel" assignTo="{!oppsId}" value="" />
             </apex:actionFunction>
@@ -118,6 +121,7 @@
                             <table width="100%">
                                 <tr>
                                     <td>
+                                        <!-- Account Details -->
                                         <apex:pageBlockSection title="Account">               
                                             <apex:outputField id="name" value="{!Account.Name}"   />
                                             <apex:outputField id="phone" value="{!Account.Phone}"  />
@@ -127,6 +131,7 @@
                                 </tr> 
                                 <tr>
                                     <td width="100%">
+                                        <!-- Opportunity Grid -->
                                         <apex:outputPanel id="OppTable" layout="block">
                                             <apex:pageBlockSection title="Opp" columns="1">
                                                 <apex:outputPanel id="Opp" layout="block">
@@ -144,6 +149,7 @@
                                                                 <td width="20%">{!opps.stagename}</td>  
                                                                 <td width="20%">
                                                                     <table width="100%">
+                                                                        <!-- Command button that calls Action Function which Refresh Grid after Deleteing Opportunity -->
                                                                         <apex:commandButton value="Delete" onclick="if(!confirm('Confirm Delete {!opps.Name}?')){return false;}else{fundeleteOpp('{!opps.Id}')}" rerender="Opp" >
                                                                         </apex:commandButton>
                                                                     </table>
@@ -159,6 +165,7 @@
                                 </tr>
                                 <tr>
                                     <td align="center">
+                                        <!-- Button to open popup for adding Opportunity -->
                                         <a class="btn" data-popup-open="popup-1" href="#">Add Opportunity</a>
                                     </td> 
                                 </tr>
@@ -170,7 +177,8 @@
             </apex:pageBlock>  
         </apex:form>
         <apex:form id="form">
-            <script type="text/javascript">        
+            <script type="text/javascript">  
+            // JavaScript to add Opportunity
             function insertitem() 
             {   
                 
@@ -212,6 +220,7 @@
                 }
             }
             </script>
+            <!-- Popup to get details of Opportunity -->
             <div class="popup" data-popup="popup-1">
                 <div class="popup-inner">
                     <center><h1>Add Opportunity :</h1></center>
