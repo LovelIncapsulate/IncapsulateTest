@@ -1,16 +1,84 @@
 <apex:page standardController="Account" extensions="AccountOpportunityController" showHeader="true" sidebar="false" id="AccOpp"> 
     <head>
         <apex:includeScript value="{!$Resource.ver223JS}" />
-        <apex:stylesheet value="{!$Resource.popupCSS}" />
-        <apex:includeScript value="{!$Resource.popupJS}" />
         <apex:includeScript value="/soap/ajax/15.0/connection.js"/>
         <apex:includeScript value="/soap/ajax/15.0/apex.js"/>
-         <script type="text/javascript"> 
-         function fundeleteOpp(oppid){
-             afdeleteOpp(oppid);
-         }
+        <script type="text/javascript"> 
+        $(function() {
+            //----- OPEN
+            $('[data-popup-open]').on('click', function(e)  {
+                var targeted_popup_class = jQuery(this).attr('data-popup-open');
+                $('[data-popup="' + targeted_popup_class + '"]').fadeIn(350);
+                
+                e.preventDefault();
+            });
+            
+            //----- CLOSE
+            $('[data-popup-close]').on('click', function(e)  {
+                var targeted_popup_class = jQuery(this).attr('data-popup-close');
+                $('[data-popup="' + targeted_popup_class + '"]').fadeOut(350);
+                
+                e.preventDefault();
+            });
+        });
+        function fundeleteOpp(oppid){
+            afdeleteOpp(oppid);
+        }
         </script>
-        <style type="text/css">           
+        <style type="text/css">  
+            /* Outer */
+            .popup {
+            width:100%;
+            height:100%;
+            display:none;
+            position:fixed;
+            top:0px;
+            left:0px;
+            background:rgba(0,0,0,0.75);
+            }
+            
+            /* Inner */
+            .popup-inner {
+            max-width:700px;
+            width:90%;
+            padding:40px;
+            position:absolute;
+            top:50%;
+            left:50%;
+            -webkit-transform:translate(-50%, -50%);
+            transform:translate(-50%, -50%);
+            box-shadow:0px 2px 6px rgba(0,0,0,1);
+            border-radius:3px;
+            background:#fff;
+            }
+            
+            /* Close Button */
+            .popup-close {
+            width:30px;
+            height:30px;
+            padding-top:4px;
+            display:inline-block;
+            position:absolute;
+            top:0px;
+            right:0px;
+            transition:ease 0.25s all;
+            -webkit-transform:translate(50%, -50%);
+            transform:translate(50%, -50%);
+            border-radius:1000px;
+            background:rgba(0,0,0,0.8);
+            font-family:Arial, Sans-Serif;
+            font-size:20px;
+            text-align:center;
+            line-height:100%;
+            color:#fff;
+            }
+            
+            .popup-close:hover {
+            -webkit-transform:translate(50%, -50%) rotate(180deg);
+            transform:translate(50%, -50%) rotate(180deg);
+            background:rgba(0,0,0,1);
+            text-decoration:none;
+            }         
             .popup input,.popup select{
             width:200px;
             }
@@ -34,7 +102,7 @@
             }
         </style>
         
-       
+        
     </head>
     <body>
         <apex:form id="form1">
@@ -59,32 +127,34 @@
                                 </tr> 
                                 <tr>
                                     <td width="100%">
-                                        <apex:pageBlockSection title="Opp" columns="1">
-                                            <apex:outputPanel id="OppTable" layout="block">
-                                                <table width="100%">
-                                                    <tr width="100%" class="header">
-                                                        <td width="20%"><b>Name</b></td>
-                                                        <td width="20%"><b>Close Date</b></td>
-                                                        <td width="20%"><b>Stage</b></td>
-                                                        <td> </td>
-                                                    </tr>
-                                                    <apex:repeat value="{!listopps}" var="opps" id="oppRepeat">
-                                                        <tr> 
-                                                            <td width="20%">{!opps.name}</td>  
-                                                            <td width="20%">{!opps.closedate}</td>  
-                                                            <td width="20%">{!opps.stagename}</td>  
-                                                            <td width="20%">
-                                                                <table width="100%">
-                                                                    <apex:commandButton value="Delete" reRender="OppTable" onclick="fundeleteOpp('{!opps.Id}')" >
-                                                                    </apex:commandButton>
-                                                                </table>
-                                                            </td>
+                                        <apex:outputPanel id="OppTable" layout="block">
+                                            <apex:pageBlockSection title="Opp" columns="1">
+                                                <apex:outputPanel id="Opp" layout="block">
+                                                    <table width="100%">
+                                                        <tr width="100%" class="header">
+                                                            <td width="20%"><b>Name</b></td>
+                                                            <td width="20%"><b>Close Date</b></td>
+                                                            <td width="20%"><b>Stage</b></td>
+                                                            <td> </td>
                                                         </tr>
-                                                    </apex:repeat>
-                                                    
-                                                </table>
-                                            </apex:outputPanel>
-                                        </apex:pageBlockSection>
+                                                        <apex:repeat value="{!listopps}" var="opps" id="oppRepeat">
+                                                            <tr> 
+                                                                <td width="20%">{!opps.name}</td>  
+                                                                <td width="20%">{!opps.closedate}</td>  
+                                                                <td width="20%">{!opps.stagename}</td>  
+                                                                <td width="20%">
+                                                                    <table width="100%">
+                                                                        <apex:commandButton value="Delete" onclick="if(!confirm('Confirm Delete {!opps.Name}?')){return false;}else{fundeleteOpp('{!opps.Id}')}" rerender="Opp" >
+                                                                        </apex:commandButton>
+                                                                    </table>
+                                                                </td>
+                                                            </tr>
+                                                        </apex:repeat>
+                                                        
+                                                    </table>
+                                                </apex:outputPanel>
+                                            </apex:pageBlockSection>
+                                        </apex:outputPanel>
                                     </td>
                                 </tr>
                                 <tr>
@@ -96,65 +166,69 @@
                         </td>                    
                     </tr>
                 </table>  
-               
+                
             </apex:pageBlock>  
         </apex:form>
         <apex:form id="form">
-             <script type="text/javascript">        
-        function insertitem() 
-        {    
-            sforce.connection.sessionId = "{!$Api.Session_ID}";           
-            if(true)
-            {                
-                var createRecords = [];           
-                var name = document.getElementById('AccOpp:form:txtname').value;
-                var CloseDate = document.getElementById('AccOpp:form:txtCloseDate').value; 
-                var stagename = document.getElementById('AccOpp:form:txtstagename').value; 
+            <script type="text/javascript">        
+            function insertitem() 
+            {   
                 
-                if(name != '' || CloseDate != '' || stagename != '')
-                {
-                    var poItem = new sforce.SObject("Opportunity");
-                    poItem.name = name;                          
-                    poItem.CloseDate = new Date(CloseDate);
-                    poItem.stagename = stagename;
-                    poItem.AccountId = "{!Id}";
-                    try{
-                        result2=sforce.connection.create([poItem]);
+                sforce.connection.sessionId = "{!$Api.Session_ID}";           
+                if(true)
+                {                
+                    var createRecords = [];           
+                    var name = document.getElementById('AccOpp:form:txtname').value;
+                    var CloseDate = document.getElementById('AccOpp:form:txtCloseDate').value; 
+                    var stagename = document.getElementById('AccOpp:form:txtstagename').value; 
+                    
+                    if(name != "" && CloseDate != "" && stagename != "")
+                    {
                         document.getElementById("closepopup").click();
-                        rerenderOpp();
+                        var poItem = new sforce.SObject("Opportunity");
+                        poItem.name = name;                          
+                        poItem.CloseDate = new Date(CloseDate);
+                        poItem.stagename = stagename;
+                        poItem.AccountId = "{!Id}";
+                        try{
+                            result2=sforce.connection.create([poItem]);
+                            document.getElementById('AccOpp:form:txtname').value = '';
+                            document.getElementById('AccOpp:form:txtCloseDate').value=''; 
+                            document.getElementById('AccOpp:form:txtstagename').value='';
+                            rerenderOpp();
+                        }
+                        catch(err) {
+                            alert("Input is " + err);
+                        }
                     }
-                    catch(err) {
-                        alert("Input is " + err);
+                    else
+                    {
+                        alert("Please fill all details")
                     }
                 }
                 else
                 {
-                    Alert("Please fill all details")
+                    document.getElementById("closepopup").click();
                 }
             }
-            else
-            {
-                document.getElementById("closepopup").click();
-            }
-        }
-        </script>
-         <div class="popup" data-popup="popup-1">
-                    <div class="popup-inner">
-                        <center><h1>Add Opportunity :</h1></center>
-                        <hr />
-                        <table width='500px' align='center'>
-                            <tr><td align="right">Name:</td>  <td align="left">      <apex:inputField id="txtname" value="{!opp.name}" /></td> </tr>
-                            <tr><td align="right">Closed Date:</td> <td align="left">       <apex:inputField id="txtCloseDate" value="{!opp.CloseDate}" /></td> </tr>
-                            <tr><td align="right">Stage:  </td >  <td align="left"><apex:inputField id="txtstagename" value="{!opp.stagename}" required="false" /></td> </tr>
-                            <tr><td align="right"></td>
-                                <td align="left">
-                                    <input type="button" id="btnAddItms" value="Add Item" onclick="insertitem(); return false;" />
-                                </td>
-                            </tr>
-                        </table>
-                        <a class="popup-close" data-popup-close="popup-1" id="closepopup" href="#">x</a>
-                    </div>
+            </script>
+            <div class="popup" data-popup="popup-1">
+                <div class="popup-inner">
+                    <center><h1>Add Opportunity :</h1></center>
+                    <hr />
+                    <table width='500px' align='center'>
+                        <tr><td align="right">Name:</td>  <td align="left">      <apex:inputField id="txtname" value="{!opp.name}" /></td> </tr>
+                        <tr><td align="right">Closed Date:</td> <td align="left">       <apex:inputField id="txtCloseDate" value="{!opp.CloseDate}" /></td> </tr>
+                        <tr><td align="right">Stage:  </td >  <td align="left"><apex:inputField id="txtstagename" value="{!opp.stagename}" required="false" /></td> </tr>
+                        <tr><td align="right"></td>
+                            <td align="left">
+                                <input type="button" id="btnAddItms" value="Add Item" onclick="insertitem(); return false;" />
+                            </td>
+                        </tr>
+                    </table>
+                    <a class="popup-close" data-popup-close="popup-1" id="closepopup" href="#">x</a>
                 </div>
+            </div>
         </apex:form>
     </body>
 </apex:page>
