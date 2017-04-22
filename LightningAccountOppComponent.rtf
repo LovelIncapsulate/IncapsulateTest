@@ -58,6 +58,7 @@
             </tr>
         </thead>
         <tbody>
+        <!--List of Oppotunity displayed as table --> 
             <aura:iteration items="{!v.Opportunities}" var="Opportunity">
                 <tr class="slds-hint-parent">
                     <td role="gridcell">
@@ -78,7 +79,7 @@
             </aura:iteration>
         </tbody>
     </table>
-    <!--Use aura:if tag to display Model Box, on the bese of conditions. [isOpen boolean attribute] -->   
+    <!--Use aura:if tag to display Model Box, on the bese of conditions. -->   
     <aura:if isTrue="{!v.isOpen}">  
         <div role="dialog" tabindex="-1" aria-labelledby="header99" class="slds-modal slds-fade-in-open ">
             <div class="slds-modal__container">
