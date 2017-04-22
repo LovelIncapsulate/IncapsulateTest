@@ -1,39 +1,32 @@
-{\rtf1\ansi\ansicpg1252\cocoartf1504
-{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
-{\colortbl;\red255\green255\blue255;}
-{\*\expandedcolortbl;\csgray\c100000;}
-\paperw11900\paperh16840\margl1440\margr1440\vieww10800\viewh8400\viewkind0
-\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
-
-\f0\fs24 \cf0 (\{\
-    doInit : function(component, event, helper) \{\
-        \
-        helper.GetAccountInfo(component);\
-        helper.getoppList(component,component.find('DrpAccName').get('v.value'));\
-    \},\
-    onSelectChange : function(component, event, helper) \{\
-        \
-        var AccId = component.find('DrpAccName').get('v.value');\
-        console.log('AccId::'+ AccId);\
-        if(AccId != null)\{\
-            helper.fetchAccountDetils(component, AccId);\
-            helper.getoppList(component, AccId);\
-        \}\
-        else\{\
-            helper.shownotification(component,'error','Account Number is required to fetch details');\
-        \}\
-    \},\
-    openModel: function(component, event, helper) \{\
-        // for Display Model,set the "isOpen" attribute to "true"\
-        component.set("v.isOpen", true);\
-    \},\
-    closeModel: function(component, event, helper) \{\
-        // for Hide/Close Model,set the "isOpen" attribute to "Fasle"  \
-        component.set("v.isOpen", false);\
-    \},\
-    SaveOpportunity: function(component, event, helper) \{\
-        helper\
-        alert('Opportunity Saved Successfully)');\
-        component.set("v.isOpen", false);\
-    \}\
-\})}
+({
+    doInit : function(component, event, helper) {
+        
+        helper.GetAccountInfo(component);
+        helper.getoppList(component,component.find('DrpAccName').get('v.value'));
+    },
+    onSelectChange : function(component, event, helper) {
+        
+        var AccId = component.find('DrpAccName').get('v.value');
+        console.log('AccId::'+ AccId);
+        if(AccId != null){
+            helper.fetchAccountDetils(component, AccId);
+            helper.getoppList(component, AccId);
+        }
+        else{
+            helper.shownotification(component,'error','Account Number is required to fetch details');
+        }
+    },
+    openModel: function(component, event, helper) {
+        // for Display Model,set the "isOpen" attribute to "true"
+        component.set("v.isOpen", true);
+    },
+    closeModel: function(component, event, helper) {
+        // for Hide/Close Model,set the "isOpen" attribute to "Fasle"  
+        component.set("v.isOpen", false);
+    },
+    SaveOpportunity: function(component, event, helper) {
+        helper
+        alert('Opportunity Saved Successfully)');
+        component.set("v.isOpen", false);
+    }
+})
