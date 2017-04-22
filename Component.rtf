@@ -1,124 +1,117 @@
-{\rtf1\ansi\ansicpg1252\cocoartf1504
-{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
-{\colortbl;\red255\green255\blue255;}
-{\*\expandedcolortbl;\csgray\c100000;}
-\paperw11900\paperh16840\margl1440\margr1440\vieww10800\viewh8400\viewkind0
-\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
-
-\f0\fs24 \cf0 <aura:component implements="force:appHostable,flexipage:availableForAllPageTypes" access="global" controller='AccountOpportunity' >\
-    <aura:handler name="init" value="\{!this\}" action="\{!c.doInit\}"/>\
-    <aura:attribute name="Accounts" type="sObject[]" />\
-    <aura:attribute name="AccountInfo" type="Account" default="\{ 'sobjectType': 'Account','Name':'','Phone':'', 'Website':''\}"/>\
-    <aura:attribute name="Opportunities" type="sObject[]"  />\
-    <aura:attribute name="Opp" type="Opportunity" default="\{ 'sobjectType': 'Opportunity','Name':'','CloseDate':'', 'Stagename':'','AccountId':''\}" />\
-    <aura:attribute name="isOpen" type="boolean" default="false"/>\
-    <fieldset class="slds-form--compound">\
-        <legend class="slds-form-element__label slds-text-title--caps">Account<br /></legend>\
-        <div class="slds-form-element__group">\
-            <div class="slds-form-element__row">\
-                <div class="slds-form-element slds-size--1-of-1">\
-                    <ui:inputSelect change="\{!c.onSelectChange\}" aura:id="DrpAccName" >\
-                        <aura:iteration items="\{!v.Accounts\}" var="acc" >\
-                            <ui:inputSelectOption text="\{!acc.Id\}" label="\{!acc.Name\}"/>\
-                        </aura:iteration>\
-                    </ui:inputSelect>\
-                </div>\
-            </div>\
-            <div class="slds-form-element__row">\
-                <div class="slds-form-element slds-size--1-of-2">\
-                    Phone : \{!v.AccountInfo.Phone\}\
-                </div> \
-                <div class="slds-form-element slds-size--1-of-2">\
-                    Website : \{!v.AccountInfo.Website\}\
-                </div>\
-            </div>\
-            <div class="slds-form-element__row">\
-                <div class="slds-form-element slds-size--1-of-1">\
-                    \
-                </div>\
-            </div>\
-        </div>\
-    </fieldset>\
-    <fieldset class="slds-form--compound">\
-        <legend class="slds-form-element__label slds-text-title--caps">Action</legend>\
-        <div class="slds-form-element__group">\
-           <button class="slds-button slds-button--neutral" onclick="\{!c.openModel\}" >Add Opportunity</button> \
-        </div>\
-    </fieldset>\
-    <table class="slds-table slds-table--bordered slds-table--fixed-layout" role="grid">\
-        <thead>\
-            <tr class="slds-line-height--reset">\
-                <th class="slds-is-sortable slds-is-resizable slds-text-title--caps" scope="col">\
-                    <span class="slds-truncate" title="Stage">Opportunity Name</span>\
-                </th>\
-                <th class="slds-is-sortable slds-is-resizable slds-text-title--caps" scope="col">\
-                    <span class="slds-truncate" title="Stage">Close Date</span>\
-                </th>\
-                <th class="slds-is-sortable slds-is-resizable slds-text-title--caps" scope="col">\
-                    <span class="slds-truncate" title="Stage">Stage</span>\
-                </th>\
-                <th scope="col" style="width:3.25rem;">\
-                    <div class="slds-th__action">\
-                        <span class="slds-truncate">Delete</span>\
-                    </div>\
-                </th>\
-            </tr>\
-        </thead>\
-        <tbody>\
-            <aura:iteration items="\{!v.Opportunities\}" var="Opportunity">\
-                <tr class="slds-hint-parent">\
-                    <td role="gridcell">\
-                        <div class="slds-truncate" title="Name">\{!Opportunity.Name\}</div>\
-                    </td>\
-                    <td role="gridcell">\
-                        <div class="slds-truncate" title="Closed Date">\{!Opportunity.CloseDate\}</div>\
-                    </td>\
-                    <td role="gridcell">\
-                        <div class="slds-truncate" title="Stage Name">\{!Opportunity.StageName\}</div>\
-                    </td>\
-                    <td role="gridcell">\
-                        <span data-delete="\{!Opportunity.Id\}" onclick="\{!c.deleteOpportunity\}"> \
-                            <c:svg class="slds-button__icon" ariahidden="true" xlinkHref="/resource/SLDS202/assets/icons/utility-sprite/svg/symbols.svg#delete">\
-                            </c:svg></span>\
-                    </td>\
-                </tr>\
-            </aura:iteration>\
-        </tbody>\
-    </table>\
-    <!--Use aura:if tag to display Model Box, on the bese of conditions. [isOpen boolean attribute] -->   \
-    <aura:if isTrue="\{!v.isOpen\}">  \
-        <div role="dialog" tabindex="-1" aria-labelledby="header99" class="slds-modal slds-fade-in-open ">\
-            <div class="slds-modal__container">\
-                <div class="slds-modal__header">\
-                    <button class="slds-button slds-modal__close slds-button--icon-inverse" title="Close" onclick="\{!c.closeModel\}">\
-                        X\
-                        <span class="slds-assistive-text">Close</span>\
-                    </button>\
-                    <h2 id="header99" class="slds-text-heading--medium">Opportunity</h2>\
-                </div>\
-                <div class="slds-modal__content slds-p-around--medium">\
-                    <table>\
-                        <tr>\
-                            <td align="right">Name:</td> \
-                            <td align="left"><ui:inputtext aura:id="OppName" value="\{!v.Opp.Name\}"></ui:inputtext>\
-                            </td>\
-                        </tr>\
-                        <tr>\
-                            <td align="right">Closed Date:</td>\
-                            <td align="left"><ui:inputDate aura:id="OppCloseDate" class="field" value="\{!v.Opp.CloseDate\}" displayDatePicker="true" /></td> \
-                        </tr>\
-                        <tr>\
-                            <td align="right">Stage:  </td > \
-                            <td align="left"><ui:inputtext aura:id="OppStageName" value="\{!v.Opp.StageName\}"></ui:inputtext></td>\
-                        </tr>\
-                    </table>\
-                </div>\
-                <div class="slds-modal__footer">\
-                    <button class="slds-button slds-button--neutral" onclick="\{!c.closeModel\}" >Cancel</button>\
-                    <button class="slds-button slds-button--brand" onclick="\{!c.SaveOpportunity\}">Save and Close</button>\
-                </div>\
-            </div>\
-        </div>\
-        <div class="slds-backdrop slds-backdrop--open"></div>\
-    </aura:if>\
-</aura:component>}
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes" access="global" controller='AccountOpportunity' >
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="Accounts" type="sObject[]" />
+    <aura:attribute name="AccountInfo" type="Account" default="{ 'sobjectType': 'Account','Name':'','Phone':'', 'Website':''}"/>
+    <aura:attribute name="Opportunities" type="sObject[]"  />
+    <aura:attribute name="Opp" type="Opportunity" default="{ 'sobjectType': 'Opportunity','Name':'','CloseDate':'', 'Stagename':'','AccountId':''}" />
+    <aura:attribute name="isOpen" type="boolean" default="false"/>
+    <fieldset class="slds-form--compound">
+        <legend class="slds-form-element__label slds-text-title--caps">Account<br /></legend>
+        <div class="slds-form-element__group">
+            <div class="slds-form-element__row">
+                <div class="slds-form-element slds-size--1-of-1">
+                    <ui:inputSelect change="{!c.onSelectChange}" aura:id="DrpAccName" >
+                        <aura:iteration items="{!v.Accounts}" var="acc" >
+                            <ui:inputSelectOption text="{!acc.Id}" label="{!acc.Name}"/>
+                        </aura:iteration>
+                    </ui:inputSelect>
+                </div>
+            </div>
+            <div class="slds-form-element__row">
+                <div class="slds-form-element slds-size--1-of-2">
+                    Phone : {!v.AccountInfo.Phone}
+                </div> 
+                <div class="slds-form-element slds-size--1-of-2">
+                    Website : {!v.AccountInfo.Website}
+                </div>
+            </div>
+            <div class="slds-form-element__row">
+                <div class="slds-form-element slds-size--1-of-1">
+                    
+                </div>
+            </div>
+        </div>
+    </fieldset>
+    <fieldset class="slds-form--compound">
+        <legend class="slds-form-element__label slds-text-title--caps">Action</legend>
+        <div class="slds-form-element__group">
+           <button class="slds-button slds-button--neutral" onclick="{!c.openModel}" >Add Opportunity</button> 
+        </div>
+    </fieldset>
+    <table class="slds-table slds-table--bordered slds-table--fixed-layout" role="grid">
+        <thead>
+            <tr class="slds-line-height--reset">
+                <th class="slds-is-sortable slds-is-resizable slds-text-title--caps" scope="col">
+                    <span class="slds-truncate" title="Stage">Opportunity Name</span>
+                </th>
+                <th class="slds-is-sortable slds-is-resizable slds-text-title--caps" scope="col">
+                    <span class="slds-truncate" title="Stage">Close Date</span>
+                </th>
+                <th class="slds-is-sortable slds-is-resizable slds-text-title--caps" scope="col">
+                    <span class="slds-truncate" title="Stage">Stage</span>
+                </th>
+                <th scope="col" style="width:3.25rem;">
+                    <div class="slds-th__action">
+                        <span class="slds-truncate">Delete</span>
+                    </div>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <aura:iteration items="{!v.Opportunities}" var="Opportunity">
+                <tr class="slds-hint-parent">
+                    <td role="gridcell">
+                        <div class="slds-truncate" title="Name">{!Opportunity.Name}</div>
+                    </td>
+                    <td role="gridcell">
+                        <div class="slds-truncate" title="Closed Date">{!Opportunity.CloseDate}</div>
+                    </td>
+                    <td role="gridcell">
+                        <div class="slds-truncate" title="Stage Name">{!Opportunity.StageName}</div>
+                    </td>
+                    <td role="gridcell">
+                        <span data-delete="{!Opportunity.Id}" onclick="{!c.deleteOpportunity}"> 
+                            <c:svg class="slds-button__icon" ariahidden="true" xlinkHref="/resource/SLDS202/assets/icons/utility-sprite/svg/symbols.svg#delete">
+                            </c:svg></span>
+                    </td>
+                </tr>
+            </aura:iteration>
+        </tbody>
+    </table>
+    <!--Use aura:if tag to display Model Box, on the bese of conditions. [isOpen boolean attribute] -->   
+    <aura:if isTrue="{!v.isOpen}">  
+        <div role="dialog" tabindex="-1" aria-labelledby="header99" class="slds-modal slds-fade-in-open ">
+            <div class="slds-modal__container">
+                <div class="slds-modal__header">
+                    <button class="slds-button slds-modal__close slds-button--icon-inverse" title="Close" onclick="{!c.closeModel}">
+                        X
+                        <span class="slds-assistive-text">Close</span>
+                    </button>
+                    <h2 id="header99" class="slds-text-heading--medium">Opportunity</h2>
+                </div>
+                <div class="slds-modal__content slds-p-around--medium">
+                    <table>
+                        <tr>
+                            <td align="right">Name:</td> 
+                            <td align="left"><ui:inputtext aura:id="OppName" value="{!v.Opp.Name}"></ui:inputtext>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="right">Closed Date:</td>
+                            <td align="left"><ui:inputDate aura:id="OppCloseDate" class="field" value="{!v.Opp.CloseDate}" displayDatePicker="true" /></td> 
+                        </tr>
+                        <tr>
+                            <td align="right">Stage:  </td > 
+                            <td align="left"><ui:inputtext aura:id="OppStageName" value="{!v.Opp.StageName}"></ui:inputtext></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="slds-modal__footer">
+                    <button class="slds-button slds-button--neutral" onclick="{!c.closeModel}" >Cancel</button>
+                    <button class="slds-button slds-button--brand" onclick="{!c.SaveOpportunity}">Save and Close</button>
+                </div>
+            </div>
+        </div>
+        <div class="slds-backdrop slds-backdrop--open"></div>
+    </aura:if>
+</aura:component>
