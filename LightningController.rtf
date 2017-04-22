@@ -1,11 +1,9 @@
 ({
     doInit : function(component, event, helper) {
-        
         helper.GetAccountInfo(component);
         helper.getoppList(component,component.find('DrpAccName').get('v.value'));
     },
     onSelectChange : function(component, event, helper) {
-        
         var AccId = component.find('DrpAccName').get('v.value');
         console.log('AccId::'+ AccId);
         if(AccId != null){
