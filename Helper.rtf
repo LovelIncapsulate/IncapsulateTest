@@ -1,82 +1,75 @@
-{\rtf1\ansi\ansicpg1252\cocoartf1504
-{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
-{\colortbl;\red255\green255\blue255;}
-{\*\expandedcolortbl;\csgray\c100000;}
-\paperw11900\paperh16840\margl1440\margr1440\vieww10800\viewh8400\viewkind0
-\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
-
-\f0\fs24 \cf0 (\{\
-    GetAccountInfo: function(component) \{\
-        var action = component.get("c.getAccountList");\
-        console.log(action);\
-        action.setCallback(this,function(a)\{\
-            component.set("v.Accounts",a.getReturnValue());\
-            console.log(component.get("v.Accounts"));    \
-        \});       \
-        $A.enqueueAction(action);        	 \
-    \},\
-    fetchAccountDetils : function(component, AcctId) \{\
-        debugger;\
-        var action = component.get("c.getAccountDetail");\
-        console.log(action);\
-        action.setParams(\{ \
-            "Id": AcctId\
-        \});\
-        action.setCallback(this, function(response) \{\
-            var state = response.getState();\
-            if (state === "SUCCESS") \{\
-                console.log("From server: " + response.getReturnValue());\
-                var OppList = response.getReturnValue();\
-                if(OppList != null)\{\
-                    component.set("v.AccountInfo", OppList);       \
-                \}\
-                else\{\
-                    alert('No record found');\
-                \}\
-            \}\
-            else\{\
-                alert('Error in Processing');\
-            \}\
-        \});\
-        $A.enqueueAction(action);\
-    \},\
-    getoppList : function(component, AcctId)\{\
-        if(AcctId!="")\{\
-            var action2 = component.get("c.getListopps");\
-            action2.setParams(\{ \
-                "Id": AcctId\
-            \});\
-            action2.setCallback(this,function(a)\{\
-                component.set("v.Opportunities",a.getReturnValue());\
-                console.log("OPPO: " +component.get("v.Opportunities"));    \
-            \});\
-            $A.enqueueAction(action2); \
-        \}\
-    \},\
-    SaveOpportunity : function(component,opp)\{\
-        if(opp!="")\{\
-            var action2 = component.get("c.Saveopportunity");\
-            action2.setParams(\{ \
-                "Opp": opp\
-            \});\
-            action2.setCallback(this,function(a)\{\
-                component.set("v.Opportunities",a.getReturnValue());\
-                console.log("OPPO1: " +component.get("v.Opportunities"));    \
-            \});\
-            $A.enqueueAction(action2); \
-        \}\
-    \},\
-    DeleteOpportunity : function(component,oppId)\{\
-        if(opp!="")\{\
-            var action2 = component.get("c.deleteopp");\
-            action2.setParams(\{ \
-                "oppsId": oppId\
-            \});\
-            action2.setCallback(this,function(a)\{\
-                component.set("v.Opportunities",a.getReturnValue());\
-                console.log("OPPO2: " +component.get("v.Opportunities"));    \
-            \});\
-            $A.enqueueAction(action2); \
-        \}\
-    \}\
-\})}
+({
+    GetAccountInfo: function(component) {
+        var action = component.get("c.getAccountList");
+        console.log(action);
+        action.setCallback(this,function(a){
+            component.set("v.Accounts",a.getReturnValue());
+            console.log(component.get("v.Accounts"));    
+        });       
+        $A.enqueueAction(action);        	 
+    },
+    fetchAccountDetils : function(component, AcctId) {
+        debugger;
+        var action = component.get("c.getAccountDetail");
+        console.log(action);
+        action.setParams({ 
+            "Id": AcctId
+        });
+        action.setCallback(this, function(response) {
+            var state = response.getState();
+            if (state === "SUCCESS") {
+                console.log("From server: " + response.getReturnValue());
+                var OppList = response.getReturnValue();
+                if(OppList != null){
+                    component.set("v.AccountInfo", OppList);       
+                }
+                else{
+                    alert('No record found');
+                }
+            }
+            else{
+                alert('Error in Processing');
+            }
+        });
+        $A.enqueueAction(action);
+    },
+    getoppList : function(component, AcctId){
+        if(AcctId!=""){
+            var action2 = component.get("c.getListopps");
+            action2.setParams({ 
+                "Id": AcctId
+            });
+            action2.setCallback(this,function(a){
+                component.set("v.Opportunities",a.getReturnValue());
+                console.log("OPPO: " +component.get("v.Opportunities"));    
+            });
+            $A.enqueueAction(action2); 
+        }
+    },
+    SaveOpportunity : function(component,opp){
+        if(opp!=""){
+            var action2 = component.get("c.Saveopportunity");
+            action2.setParams({ 
+                "Opp": opp
+            });
+            action2.setCallback(this,function(a){
+                component.set("v.Opportunities",a.getReturnValue());
+                console.log("OPPO1: " +component.get("v.Opportunities"));    
+            });
+            $A.enqueueAction(action2); 
+        }
+    },
+    DeleteOpportunity : function(component,oppId){
+        if(opp!=""){
+            var action2 = component.get("c.deleteopp");
+            action2.setParams({ 
+                "oppsId": oppId
+            });
+            action2.setCallback(this,function(a){
+                component.set("v.Opportunities",a.getReturnValue());
+                console.log("OPPO2: " +component.get("v.Opportunities"));    
+            });
+            $A.enqueueAction(action2); 
+        }
+    }
+})
