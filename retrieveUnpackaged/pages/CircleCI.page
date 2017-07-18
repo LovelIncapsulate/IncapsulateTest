@@ -1,0 +1,8 @@
+<apex:page >
+    <style>
+        body{background:#ccc;}
+        
+    </style>
+    We USE CircleCi
+    
+</apex:page>
