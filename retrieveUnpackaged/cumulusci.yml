@@ -1,0 +1,7 @@
+project:
+    name: DevIncapLp
+    package:
+        name: DevLp
+        namespace: DevIncapLp
+    git:
+        default_branch: https://github.com/abatish/DC311.git
